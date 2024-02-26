@@ -8,7 +8,11 @@ const History = ({history}) => {
 			<h3 className="text-center">Song History</h3>
 			<ul>
 				{reversedHistory.map((song, index) => (
-					<li style={{listStyleType: "none"}} key={index}>
+					<li
+						style={{listStyleType: "none"}}
+						className="text-center"
+						key={index}
+					>
 						{song.name} - {song.artists.map((artist) => artist.name).join(", ")}
 					</li>
 				))}
