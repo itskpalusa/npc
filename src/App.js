@@ -55,15 +55,19 @@ const App = () => {
 	};
 
 	return (
-		<div className="container center">
-			<h1>Spotify Currently Playing App</h1>
-			{accessToken ? (
-				<SpotifyPlayer accessToken={accessToken} />
-			) : (
-				<div className="btn btn-primary" onClick={handleLogin}>
-					Log in with Spotify
-				</div>
-			)}
+		<div className="container">
+			<div>
+				<h1>Spotify Currently Playing App</h1>
+			</div>
+			<div>
+				{accessToken ? (
+					<SpotifyPlayer accessToken={accessToken} />
+				) : (
+					<div className="btn btn-primary" onClick={handleLogin}>
+						Log in with Spotify
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

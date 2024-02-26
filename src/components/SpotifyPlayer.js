@@ -1,9 +1,26 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 
+const History = ({history}) => {
+	const reversedHistory = history.slice().reverse(); // Create a copy of the array and reverse it
+	return (
+		<div>
+			<h3>Song History</h3>
+			<ul>
+				{reversedHistory.map((song, index) => (
+					<li key={index}>
+						{song.name} - {song.artists.map((artist) => artist.name).join(", ")}
+					</li>
+				))}
+			</ul>
+		</div>
+	);
+};
+
 const SpotifyPlayer = ({accessToken}) => {
 	const [userData, setUserData] = useState(null);
 	const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
+	const [songHistory, setSongHistory] = useState([]);
 
 	const fetchUserData = async () => {
 		try {
@@ -28,7 +45,16 @@ const SpotifyPlayer = ({accessToken}) => {
 					},
 				},
 			);
-			setCurrentlyPlaying(response.data.item);
+			const currentTrack = response.data.item;
+			setCurrentlyPlaying(currentTrack);
+
+			// Update song history
+			if (
+				currentTrack &&
+				!songHistory.some((song) => song.id === currentTrack.id)
+			) {
+				setSongHistory([...songHistory, currentTrack]);
+			}
 		} catch (error) {
 			console.error(
 				"Error fetching currently playing track:",
@@ -44,8 +70,8 @@ const SpotifyPlayer = ({accessToken}) => {
 			fetchCurrentlyPlaying();
 		}, 5000); // Refresh every 5 seconds
 
-		return () => clearInterval(intervalId);
-	}, [accessToken]);
+		return () => clearInterval(intervalId); // Clean up interval on component unmount
+	}, [accessToken, songHistory]);
 
 	return (
 		<div>
@@ -70,6 +96,7 @@ const SpotifyPlayer = ({accessToken}) => {
 					/>
 				</div>
 			)}
+			<History history={songHistory} />
 		</div>
 	);
 };
