@@ -56,7 +56,7 @@ const App = () => {
 
 	return (
 		<div className="container">
-			<div>
+			<div className="text-center">
 				<h1>Spotify Currently Playing App</h1>
 			</div>
 			<div>

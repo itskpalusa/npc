@@ -5,10 +5,10 @@ const History = ({history}) => {
 	const reversedHistory = history.slice().reverse(); // Create a copy of the array and reverse it
 	return (
 		<div>
-			<h3>Song History</h3>
+			<h3 className="text-center">Song History</h3>
 			<ul>
 				{reversedHistory.map((song, index) => (
-					<li key={index}>
+					<li style={{listStyleType: "none"}} key={index}>
 						{song.name} - {song.artists.map((artist) => artist.name).join(", ")}
 					</li>
 				))}
@@ -47,7 +47,7 @@ const SpotifyPlayer = ({accessToken}) => {
 			);
 			const currentTrack = response.data.item;
 			setCurrentlyPlaying(currentTrack);
-
+			console.log(currentTrack);
 			// Update song history
 			if (
 				currentTrack &&
@@ -76,27 +76,54 @@ const SpotifyPlayer = ({accessToken}) => {
 	return (
 		<div>
 			{userData && (
-				<div>
+				<div className="text-center">
 					<h2>Welcome, {userData.display_name}</h2>
 				</div>
 			)}
 			{currentlyPlaying && (
-				<div>
-					<h3>Currently Playing</h3>
-					<p>Song: {currentlyPlaying.name}</p>
-					<p>
-						Artist:{" "}
-						{currentlyPlaying.artists.map((artist) => artist.name).join(", ")}
-					</p>
-					<p>Album: {currentlyPlaying.album.name}</p>
-					<img
-						src={currentlyPlaying.album.images[0].url}
-						alt="Album Cover"
-						width={200}
-					/>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+				>
+					<div className="card" style={{width: "18rem"}}>
+						<div className="card-header">
+							<h6 className="card-text text-center">Currently Playing</h6>
+						</div>
+						<div className="card-body">
+							<h5 className="card-title text-center">
+								Song: {currentlyPlaying.name}
+							</h5>
+							<p className="text-muted text-center">
+								Album: {currentlyPlaying.album.name}
+							</p>
+							<p className="text text-center">
+								Artist:{" "}
+								{currentlyPlaying.artists
+									.map((artist) => artist.name)
+									.join(", ")}
+							</p>
+							<img
+								className="rounded mx-auto d-block border"
+								src={currentlyPlaying.album.images[0].url}
+								alt="Album Cover"
+								width={100}
+							/>
+						</div>
+					</div>
 				</div>
 			)}
-			<History history={songHistory} />
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+			>
+				<History history={songHistory} />
+			</div>
 		</div>
 	);
 };
