@@ -3,16 +3,13 @@ import axios from "axios";
 
 const History = ({history}) => {
 	const reversedHistory = history.slice().reverse(); // Create a copy of the array and reverse it
+
 	return (
 		<div>
 			<h3 className="text-center">Song History</h3>
-			<ul>
+			<ul style={{listStyleType: "none", paddingLeft: "0"}}>
 				{reversedHistory.map((song, index) => (
-					<li
-						style={{listStyleType: "none"}}
-						className="text-center"
-						key={index}
-					>
+					<li className="text-center" key={index}>
 						{song.name} - {song.artists.map((artist) => artist.name).join(", ")}
 					</li>
 				))}
