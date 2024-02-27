@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 import SpotifyPlayer from "./components/SpotifyPlayer";
+import GeniusCredits from "./components/GeniusCredits";
 
 const App = () => {
 	const [accessToken, setAccessToken] = useState("");
@@ -56,17 +57,23 @@ const App = () => {
 
 	return (
 		<div className="container">
-			<div className="text-center">
-				<h1>Spotify Currently Playing App</h1>
+			<div>
+				<div className="text-center">
+					<h1>Spotify Currently Playing App</h1>
+				</div>
+				<div>
+					{accessToken ? (
+						<SpotifyPlayer accessToken={accessToken} />
+					) : (
+						<div className="btn btn-primary" onClick={handleLogin}>
+							Log in with Spotify
+						</div>
+					)}
+				</div>
 			</div>
 			<div>
-				{accessToken ? (
-					<SpotifyPlayer accessToken={accessToken} />
-				) : (
-					<div className="btn btn-primary" onClick={handleLogin}>
-						Log in with Spotify
-					</div>
-				)}
+				<h1>Get Song Credits</h1>
+				<GeniusCredits />
 			</div>
 		</div>
 	);
