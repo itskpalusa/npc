@@ -71,7 +71,7 @@ const App = () => {
 					)}
 				</div>
 			</div>
-			<div>
+			<div className="text-center">
 				<h1>Get Song Credits</h1>
 				<GeniusCredits />
 			</div>

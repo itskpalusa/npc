@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import axios from "axios";
 
+
+
 const GeniusCredits = () => {
 	const [songName, setSongName] = useState("");
 	const [artistName, setArtistName] = useState("");
@@ -45,42 +47,93 @@ const GeniusCredits = () => {
 	};
 
 	return (
-		<div>
-			<input
-				type="text"
-				placeholder="Song Name"
-				value={songName}
-				onChange={(e) => setSongName(e.target.value)}
-			/>
-			<input
-				type="text"
-				placeholder="Artist Name"
-				value={artistName}
-				onChange={(e) => setArtistName(e.target.value)}
-			/>
-			<button onClick={searchSong}>Search</button>
+		<div className="container">
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					marginBottom: "3mm",
+				}}
+			>
+				{" "}
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+					}}
+				>
+					<div className="form-row align-items-center">
+						<div className="col">
+							<input
+								id="songNameField"
+								className="form-rowform-group"
+								placeholder="Song Name"
+								value={songName}
+								onChange={(e) => setSongName(e.target.value)}
+							/>
+						</div>
+						<div className="col">
+							<input
+								id="songArtistName"
+								className="form-rowform-group"
+								type="text"
+								placeholder="Artist Name"
+								value={artistName}
+								onChange={(e) => setArtistName(e.target.value)}
+							/>
+						</div>
+						<div className="col">
+							<button className="btn btn-primary" onClick={searchSong}>
+								Search
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+			>
+				<div className="row">
+					<div className="col">
+						<div className="card" style={{width: "18rem"}}>
+							{error && <p>{error}</p>}
+							{producers.length > 0 && (
+								<div>
+									<div className="card-header">
+										<h6 className="card-text text-center">Producers</h6>
+									</div>{" "}
+									<ul style={{listStyle: "none", paddingLeft: "0"}}>
+										{producers.map((producer, index) => (
+											<li key={index}>{producer}</li>
+										))}
+									</ul>
+								</div>
+							)}
+						</div>
+					</div>
 
-			{error && <p>{error}</p>}
-			{producers.length > 0 && (
-				<div>
-					<p>Producers:</p>
-					<ul>
-						{producers.map((producer, index) => (
-							<li key={index}>{producer}</li>
-						))}
-					</ul>
+					<div className="col">
+						<div className="card" style={{width: "18rem"}}>
+							{writers.length > 0 && (
+								<div>
+									<div className="card-header">
+										<h6 className="card-text text-center">Writers</h6>
+									</div>{" "}
+									<ul style={{listStyle: "none", paddingLeft: "0"}}>
+										{writers.map((writer, index) => (
+											<li key={index}>{writer}</li>
+										))}
+									</ul>
+								</div>
+							)}
+						</div>
+					</div>
 				</div>
-			)}
-			{writers.length > 0 && (
-				<div>
-					<p>Writers:</p>
-					<ul>
-						{writers.map((writer, index) => (
-							<li key={index}>{writer}</li>
-						))}
-					</ul>
-				</div>
-			)}
+			</div>
 		</div>
 	);
 };
