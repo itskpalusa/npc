@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-const GeniusCredits = () => {
+const GeniusCredits = ({currentSong}) => {
 	const [songName, setSongName] = useState("");
 	const [artistName, setArtistName] = useState("");
 	const [producers, setProducers] = useState("");
@@ -46,8 +46,24 @@ const GeniusCredits = () => {
 		}
 	};
 
+	const getCurrentlyPlayingSongDetails = async () => {
+		console.log(currentSong.name.split("(")[0]);
+		setSongName(currentSong.name);
+		setArtistName(currentSong.artists.map((artist) => artist.name).join(", "));
+		searchSong();
+	};
+
 	return (
 		<div className="container">
+			<div>
+				<button
+					className="btn btn-secondary"
+					onClick={getCurrentlyPlayingSongDetails}
+				>
+					Get Credits of Current Song
+				</button>
+			</div>
+			<br />
 			<div
 				style={{
 					display: "flex",
