@@ -6,6 +6,7 @@ import GeniusCredits from "./components/GeniusCredits";
 
 const App = () => {
 	const [accessToken, setAccessToken] = useState("");
+  const [currentSong, setCurrentSong] = useState(null);
 
 	useEffect(() => {
 		const handleCallback = async () => {
@@ -55,25 +56,42 @@ const App = () => {
 		window.location.href = authUrl;
 	};
 
+	const handleSongChange = (song) => {
+		setCurrentSong(song);
+	};
+
 	return (
 		<div className="container">
 			<div>
 				<div className="text-center">
-					<h1>Spotify Currently Playing App</h1>
+					<h1>Currently Playing</h1>
 				</div>
 				<div>
 					{accessToken ? (
-						<SpotifyPlayer accessToken={accessToken} />
+						<SpotifyPlayer
+							accessToken={accessToken}
+							onSongChange={handleSongChange}
+						/>
 					) : (
-						<div className="btn btn-primary" onClick={handleLogin}>
-							Log in with Spotify
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "center",
+							}}
+						>
+							<div className="btn btn-primary" onClick={handleLogin}>
+								Log in with Spotify
+							</div>
 						</div>
 					)}
 				</div>
 			</div>
+			<hr style={{width: "75%", height: "2px", color: "black"}}></hr>
+
 			<div className="text-center">
 				<h1>Get Song Credits</h1>
-				<GeniusCredits />
+				<GeniusCredits currentSong={currentSong} />
 			</div>
 		</div>
 	);
