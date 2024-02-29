@@ -47,9 +47,23 @@ const GeniusCredits = ({currentSong}) => {
 	};
 
 	const getCurrentlyPlayingSongDetails = async () => {
-		console.log(currentSong.name.split("(")[0]);
-		setSongName(currentSong.name);
-		setArtistName(currentSong.artists.map((artist) => artist.name).join(", "));
+		// Clean currently playing song input to fix issue where songs with () or - didn't work properly
+		if (currentSong.name.includes("(")) {
+			setSongName(currentSong.name.split("(")[0]);
+			// Only send first artist
+			setArtistName(currentSong.artists[0].name);
+		} else if (currentSong.name.includes("-")) {
+			setSongName(currentSong.name.split("-")[0]);
+			// Only send first artist
+			setArtistName(currentSong.artists[0].name);
+		} else {
+			// Normal
+			setSongName(currentSong.name);
+			setArtistName(
+				currentSong.artists.map((artist) => artist.name).join(", "),
+			);
+		}
+
 		searchSong();
 	};
 
@@ -113,7 +127,7 @@ const GeniusCredits = ({currentSong}) => {
 					justifyContent: "center",
 				}}
 			>
-				<div className="row">
+				<div className="row" style={{paddingBottom: "5px"}}>
 					<div className="col">
 						<div className="card" style={{width: "18rem"}}>
 							{error && <p>{error}</p>}

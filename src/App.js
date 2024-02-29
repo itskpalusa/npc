@@ -6,7 +6,7 @@ import GeniusCredits from "./components/GeniusCredits";
 
 const App = () => {
 	const [accessToken, setAccessToken] = useState("");
-  const [currentSong, setCurrentSong] = useState(null);
+	const [currentSong, setCurrentSong] = useState(null);
 
 	useEffect(() => {
 		const handleCallback = async () => {
