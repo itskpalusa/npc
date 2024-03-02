@@ -47,9 +47,9 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 				},
 			);
 			const currentTrack = response.data.item;
-			setCurrentlyPlaying(currentTrack);
 			onSongChange(currentTrack);
-			console.log(currentTrack);
+			setCurrentlyPlaying(currentTrack);
+			// console.log(currentTrack);
 			// Update song history
 			if (
 				currentTrack &&
@@ -70,7 +70,7 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 		fetchCurrentlyPlaying();
 		const intervalId = setInterval(() => {
 			fetchCurrentlyPlaying();
-		}, 10000); // Refresh every 10 seconds
+		}, 5000); // Refresh every 10 seconds
 
 		return () => clearInterval(intervalId); // Clean up interval on component unmount
 	}, [accessToken, songHistory]);

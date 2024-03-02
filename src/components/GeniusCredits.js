@@ -1,7 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
-
-
 
 const GeniusCredits = ({currentSong}) => {
 	const [songName, setSongName] = useState("");
@@ -10,27 +8,23 @@ const GeniusCredits = ({currentSong}) => {
 	const [writers, setWriters] = useState("");
 	const [error, setError] = useState(null);
 
+	useEffect(() => {
+		if (songName && artistName) {
+			searchSong();
+		}
+	}, [songName, artistName]);
+
 	const searchSong = async () => {
 		try {
-			// First response to search for the song
 			const response = await axios.get(
 				`https://api.genius.com/search?q=${songName} ${artistName}&access_token=HSpJDGiFMsHxm9StKheXxSTCpuNSWr1dtKqaj69rS5dlBfH2Wgz3v2xUAL8X6vzY`,
 			);
 
-			console.log(response.data.response.hits[0].result.api_path); // Print path
-
-			// With url from above search again to get song data
 			const songData = await axios.get(
 				`https://api.genius.com${response.data.response.hits[0].result.api_path}?access_token=HSpJDGiFMsHxm9StKheXxSTCpuNSWr1dtKqaj69rS5dlBfH2Wgz3v2xUAL8X6vzY`,
 			);
-			// Print song info
-			console.log(songData.data.response.song);
 
-			// Assign song to variable
 			const parsedSongData = songData.data.response.song;
-
-			// Assign producers and writers to array with conditional if only one producer
-
 			const producers = Array.isArray(parsedSongData.producer_artists)
 				? parsedSongData.producer_artists.map((producer) => producer.name)
 				: [];
@@ -46,25 +40,25 @@ const GeniusCredits = ({currentSong}) => {
 		}
 	};
 
-	const getCurrentlyPlayingSongDetails = async () => {
-		// Clean currently playing song input to fix issue where songs with () or - didn't work properly
+	const getCurrentlyPlayingSongDetails = () => {
+		let updatedSongName = "";
+		let updatedArtistName = "";
+
 		if (currentSong.name.includes("(")) {
-			setSongName(currentSong.name.split("(")[0]);
-			// Only send first artist
-			setArtistName(currentSong.artists[0].name);
+			updatedSongName = currentSong.name.split("(")[0];
+			updatedArtistName = currentSong.artists[0].name;
 		} else if (currentSong.name.includes("-")) {
-			setSongName(currentSong.name.split("-")[0]);
-			// Only send first artist
-			setArtistName(currentSong.artists[0].name);
+			updatedSongName = currentSong.name.split("-")[0];
+			updatedArtistName = currentSong.artists[0].name;
 		} else {
-			// Normal
-			setSongName(currentSong.name);
-			setArtistName(
-				currentSong.artists.map((artist) => artist.name).join(", "),
-			);
+			updatedSongName = currentSong.name;
+			updatedArtistName = currentSong.artists
+				.map((artist) => artist.name)
+				.join(", ");
 		}
 
-		searchSong();
+		setSongName(updatedSongName);
+		setArtistName(updatedArtistName);
 	};
 
 	return (
