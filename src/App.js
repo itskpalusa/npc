@@ -3,7 +3,8 @@ import axios from "axios";
 
 import SpotifyPlayer from "./components/SpotifyPlayer";
 import GeniusCredits from "./components/GeniusCredits";
-
+import CurrentlyPlayingCredits from "./components/CurrentlyPlayingCredits";
+import History from "./components/History";
 const App = () => {
 	const [accessToken, setAccessToken] = useState("");
 	const [currentSong, setCurrentSong] = useState(null);
@@ -49,7 +50,7 @@ const App = () => {
 		const clientId = "100c1e60363c4829906eff1efa932728";
 		const redirectUri = encodeURIComponent("http://localhost:3000/callback");
 		const scopes = encodeURIComponent(
-			"user-read-private user-read-email user-read-currently-playing",
+			"user-read-private user-read-email user-read-currently-playing user-read-recently-played",
 		);
 
 		const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scopes}`;
@@ -68,10 +69,14 @@ const App = () => {
 				</div>
 				<div>
 					{accessToken ? (
-						<SpotifyPlayer
-							accessToken={accessToken}
-							onSongChange={handleSongChange}
-						/>
+						<div>
+							<SpotifyPlayer
+								accessToken={accessToken}
+								onSongChange={handleSongChange}
+							/>
+
+							<CurrentlyPlayingCredits currentSong={currentSong} />
+						</div>
 					) : (
 						<div
 							style={{
@@ -88,11 +93,7 @@ const App = () => {
 				</div>
 			</div>
 			<hr style={{width: "75%", height: "2px", color: "black"}}></hr>
-
-			<div className="text-center">
-				<h1>Get Song Credits</h1>
-				<GeniusCredits currentSong={currentSong} />
-			</div>
+			<History accessToken={accessToken} />
 		</div>
 	);
 };
