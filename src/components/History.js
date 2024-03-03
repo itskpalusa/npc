@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 
 const History = ({accessToken}) => {
 	const [songs, setSongs] = useState([]);
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -18,26 +19,60 @@ const History = ({accessToken}) => {
 				setSongs(data.items);
 			} catch (error) {
 				console.error("Error fetching data:", error);
+				setError("Failed to fetch song data. Please try again.");
 			}
 		};
 
-		if (accessToken) {
-			fetchData();
-		}
+		const fetchInterval = setInterval(() => {
+			if (accessToken) {
+				fetchData();
+			}
+		}, 60000); // Fetch data every minute
+
+		return () => {
+			clearInterval(fetchInterval); // Clear interval on unmount
+		};
 	}, [accessToken]);
 
 	return (
-		<div>
-			<h2>Last Listened Songs</h2>
-			<ul>
-				{songs &&
-					songs.map((song, index) => (
-						<li key={index}>
-							{song.track.name} -{" "}
-							{song.track.artists.map((artist) => artist.name).join(", ")}
-						</li>
-					))}
-			</ul>
+		<div
+			style={{
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
+			{" "}
+			<div className="row" style={{paddingBottom: "5px"}}>
+				<div className="col">
+					<div className="card" style={{width: "18rem"}}>
+						{error && <p>{error}</p>}
+						<div>
+							<div className="card-header">
+								<h6 className="card-text text-center">Last Listened Songs</h6>
+							</div>{" "}
+							<ul
+								style={{
+									listStyle: "none",
+									paddingLeft: "0",
+									paddingBottom: "5px",
+								}}
+								className="text-center"
+							>
+								{songs &&
+									songs.map((song, index) => (
+										<li key={index}>
+											{song.track.name} -{" "}
+											{song.track.artists
+												.map((artist) => artist.name)
+												.join(", ")}
+										</li>
+									))}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };
