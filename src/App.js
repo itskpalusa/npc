@@ -50,7 +50,7 @@ const App = () => {
 		const clientId = "100c1e60363c4829906eff1efa932728";
 		const redirectUri = encodeURIComponent("http://localhost:3000/callback");
 		const scopes = encodeURIComponent(
-			"user-read-private user-read-email user-read-currently-playing user-read-recently-played",
+			"user-read-private user-read-email user-read-currently-playing user-read-recently-played user-modify-playback-state",
 		);
 
 		const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scopes}`;
@@ -65,7 +65,7 @@ const App = () => {
 		<div className="container">
 			<div>
 				<div className="text-center">
-					<h1>Currently Playing</h1>
+					<h1>Now Playing Credits</h1>
 				</div>
 				<div>
 					{accessToken ? (
@@ -92,7 +92,8 @@ const App = () => {
 					)}
 				</div>
 			</div>
-			<hr style={{width: "75%", height: "2px", color: "black"}}></hr>
+			<hr style={ { width: "75%", height: "2px", color: "black" } }></hr>
+			
 			<History accessToken={accessToken} />
 		</div>
 	);
