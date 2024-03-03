@@ -1,22 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 
-const History = ({history}) => {
-	const reversedHistory = history.slice().reverse(); // Create a copy of the array and reverse it
 
-	return (
-		<div>
-			<h3 className="text-center">Song History</h3>
-			<ul style={{listStyleType: "none", paddingLeft: "0"}}>
-				{reversedHistory.map((song, index) => (
-					<li className="text-center" key={index}>
-						{song.name} - {song.artists.map((artist) => artist.name).join(", ")}
-					</li>
-				))}
-			</ul>
-		</div>
-	);
-};
 
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	const [userData, setUserData] = useState(null);
@@ -55,6 +40,7 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 				currentTrack &&
 				!songHistory.some((song) => song.id === currentTrack.id)
 			) {
+				onSongChange(currentTrack);
 				setSongHistory([...songHistory, currentTrack]);
 			}
 		} catch (error) {
@@ -76,45 +62,10 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	}, [accessToken, songHistory]);
 
 	return (
-		<div>
+		<div className="container">
 			{userData && (
 				<div className="text-center">
 					<h2>Welcome, {userData.display_name}</h2>
-				</div>
-			)}
-			{currentlyPlaying && (
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
-					<div className="card" style={{width: "18rem"}}>
-						<div className="card-header">
-							<h6 className="card-text text-center">Currently Playing</h6>
-						</div>
-						<div className="card-body">
-							<h5 className="card-title text-center">
-								Song: {currentlyPlaying.name}
-							</h5>
-							<p className="text-muted text-center">
-								Album: {currentlyPlaying.album.name}
-							</p>
-							<p className="text text-center">
-								Artist:{" "}
-								{currentlyPlaying.artists
-									.map((artist) => artist.name)
-									.join(", ")}
-							</p>
-							<img
-								className="rounded mx-auto d-block border"
-								src={currentlyPlaying.album.images[0].url}
-								alt="Album Cover"
-								width={100}
-							/>
-						</div>
-					</div>
 				</div>
 			)}
 			<div
@@ -124,7 +75,38 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 					justifyContent: "center",
 				}}
 			>
-				<History history={songHistory} />
+				<div className="row">
+					{" "}
+					{currentlyPlaying && (
+						<div className="col">
+							<div className="card" style={{width: "18rem"}}>
+								<div className="card-header">
+									<h6 className="card-text text-center">Currently Playing</h6>
+								</div>
+								<div className="card-body">
+									<h5 className="card-title text-center">
+										Song: {currentlyPlaying.name}
+									</h5>
+									<p className="text-muted text-center">
+										Album: {currentlyPlaying.album.name}
+									</p>
+									<p className="text text-center">
+										Artist:{" "}
+										{currentlyPlaying.artists
+											.map((artist) => artist.name)
+											.join(", ")}
+									</p>
+									<img
+										className="rounded mx-auto d-block border"
+										src={currentlyPlaying.album.images[0].url}
+										alt="Album Cover"
+										width={100}
+									/>
+								</div>
+							</div>
+						</div>
+					)}
+				</div>
 			</div>
 		</div>
 	);
