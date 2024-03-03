@@ -51,6 +51,42 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 		}
 	};
 
+	const handleNextSong = async () => {
+		try {
+			await axios.post(
+				"https://api.spotify.com/v1/me/player/next",
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				},
+			);
+			// Fetch and update the currently playing song
+			fetchCurrentlyPlaying();
+		} catch (error) {
+			console.error("Error playing next song:", error.response.data);
+		}
+	};
+
+	const handlePreviousSong = async () => {
+		try {
+			await axios.post(
+				"https://api.spotify.com/v1/me/player/previous",
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				},
+			);
+			// Fetch and update the currently playing song
+			fetchCurrentlyPlaying();
+		} catch (error) {
+			console.error("Error playing previous song:", error.response.data);
+		}
+	};
+
 	useEffect(() => {
 		fetchUserData();
 		fetchCurrentlyPlaying();
@@ -77,35 +113,48 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 			>
 				<div className="row">
 					{" "}
+					<div className="col align-self-center">
+						<button className="btn btn-primary" onClick={handlePreviousSong}>
+							<i className="fa-solid fa-arrow-left-long"></i>{" "}
+						</button>
+					</div>
 					{currentlyPlaying && (
-						<div className="col">
-							<div className="card" style={{width: "18rem"}}>
-								<div className="card-header">
-									<h6 className="card-text text-center">Currently Playing</h6>
-								</div>
-								<div className="card-body">
-									<h5 className="card-title text-center">
-										Song: {currentlyPlaying.name}
-									</h5>
-									<p className="text-muted text-center">
-										Album: {currentlyPlaying.album.name}
-									</p>
-									<p className="text text-center">
-										Artist:{" "}
-										{currentlyPlaying.artists
-											.map((artist) => artist.name)
-											.join(", ")}
-									</p>
-									<img
-										className="rounded mx-auto d-block border"
-										src={currentlyPlaying.album.images[0].url}
-										alt="Album Cover"
-										width={100}
-									/>
+						<div>
+							<div className="col">
+								<div className="card" style={{width: "18rem"}}>
+									<div className="card-header">
+										<h6 className="card-text text-center">Currently Playing</h6>
+									</div>
+									<div className="card-body">
+										<h5 className="card-title text-center">
+											Song: {currentlyPlaying.name}
+										</h5>
+										<p className="text-muted text-center">
+											Album: {currentlyPlaying.album.name}
+										</p>
+										<p className="text text-center">
+											Artist:{" "}
+											{currentlyPlaying.artists
+												.map((artist) => artist.name)
+												.join(", ")}
+										</p>
+
+										<img
+											className="rounded mx-auto d-block border"
+											src={currentlyPlaying.album.images[0].url}
+											alt="Album Cover"
+											width={100}
+										/>
+									</div>
 								</div>
 							</div>
 						</div>
 					)}
+					<div className="col align-self-center">
+						<button className="btn btn-primary" onClick={handleNextSong}>
+							<i className="fa-solid fa-arrow-right-long"></i>{" "}
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
