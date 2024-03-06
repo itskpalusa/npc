@@ -94,8 +94,14 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	return (
 		<div className="container">
 			{userData && (
-				<div className="text-center">
-					<h2>Welcome, {userData.display_name}</h2>
+				<div>
+					<div className="text-center">
+						<h2>Welcome, {userData.display_name}</h2>
+					</div>{" "}
+					<hr style={{width: "75%", height: "2px", color: "black"}}></hr>
+					<div className="text-center">
+						<h2>Currently Playing</h2>
+					</div>
 				</div>
 			)}
 			<div
