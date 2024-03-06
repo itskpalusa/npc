@@ -2,11 +2,9 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 
 
-
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	const [userData, setUserData] = useState(null);
 	const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
-	const [songHistory, setSongHistory] = useState([]);
 
 	const fetchUserData = async () => {
 		try {
@@ -35,13 +33,8 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 			onSongChange(currentTrack);
 			setCurrentlyPlaying(currentTrack);
 			// console.log(currentTrack);
-			// Update song history
-			if (
-				currentTrack &&
-				!songHistory.some((song) => song.id === currentTrack.id)
-			) {
+			if (currentTrack) {
 				onSongChange(currentTrack);
-				setSongHistory([...songHistory, currentTrack]);
 			}
 		} catch (error) {
 			console.error(
@@ -95,7 +88,8 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 		}, 5000); // Refresh every 10 seconds
 
 		return () => clearInterval(intervalId); // Clean up interval on component unmount
-	}, [accessToken, songHistory]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [accessToken]);
 
 	return (
 		<div className="container">
