@@ -4,6 +4,7 @@ import SongPopularityIndicator from "./SongPopularityIndicator";
 
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	const [userData, setUserData] = useState(null);
+	const [lastPlayed, setLastPlayed] = useState(null);
 	const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
 
 	const fetchUserData = async () => {
@@ -30,10 +31,12 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 				},
 			);
 			const currentTrack = response.data.item;
-			onSongChange(currentTrack);
-			setCurrentlyPlaying(currentTrack);
 			if (currentTrack) {
 				onSongChange(currentTrack);
+				setCurrentlyPlaying(currentTrack);
+			} else {
+				// Fetch last played if nothing currently playing
+				fetchLastPlayed();
 			}
 		} catch (error) {
 			console.error(
@@ -42,6 +45,24 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 			);
 		}
 	};
+
+	const fetchLastPlayed = async () => {
+		try {
+			const response = await axios.get(
+				"https://api.spotify.com/v1/me/player/recently-played?limit=1",
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				},
+			);
+			const lastPlayedTrack = response.data.items[0].track;
+			setLastPlayed(lastPlayedTrack);
+		} catch (error) {
+			console.error("Error fetching last played track:", error.response.data);
+		}
+	};
+
 
 	const handleNextSong = async () => {
 		try {
