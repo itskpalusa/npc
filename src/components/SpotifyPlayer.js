@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-
+import SongPopularityIndicator from "./SongPopularityIndicator";
 
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	const [userData, setUserData] = useState(null);
 	const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
+	const [songPopularity, setSongPopularity] = useState(0);
 
 	const fetchUserData = async () => {
 		try {
@@ -32,7 +33,6 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 			const currentTrack = response.data.item;
 			onSongChange(currentTrack);
 			setCurrentlyPlaying(currentTrack);
-			// console.log(currentTrack);
 			if (currentTrack) {
 				onSongChange(currentTrack);
 			}
@@ -83,6 +83,7 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	useEffect(() => {
 		fetchUserData();
 		fetchCurrentlyPlaying();
+		setSongPopularity();
 		const intervalId = setInterval(() => {
 			fetchCurrentlyPlaying();
 		}, 5000); // Refresh every 10 seconds
@@ -144,6 +145,21 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 											src={currentlyPlaying.album.images[0].url}
 											alt="Album Cover"
 											width={100}
+										/>
+									</div>
+								</div>
+							</div>
+							<br />
+							<div className="col">
+								<div className="card" style={{width: "18rem"}}>
+									<div className="card-header">
+										<h6 className="card-text text-center">
+											Popularity: {currentlyPlaying.popularity}
+										</h6>
+									</div>
+									<div className="card-body">
+										<SongPopularityIndicator
+											songPopularity={currentlyPlaying.popularity}
 										/>
 									</div>
 								</div>

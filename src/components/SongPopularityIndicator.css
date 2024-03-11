@@ -1,0 +1,16 @@
+/* SongPopularityIndicator.css */
+.progress.vertical {
+  height: 200px; /* Set the height of the vertical progress bar */
+  width: 20px; /* Set the width of the vertical progress bar */
+}
+
+.progress.vertical .progress-bar.vertical {
+  width: 100%; /* Ensure full width of the progress bar */
+  -webkit-transform: rotate(90deg); /* Rotate the progress bar */
+  transform: rotate(90deg);
+  transform-origin: left top; /* Adjust rotation origin */
+}
+
+.container {
+  
+}
