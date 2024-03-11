@@ -5,7 +5,7 @@ import SongPopularityIndicator from "./SongPopularityIndicator";
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	const [userData, setUserData] = useState(null);
 	const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
-	const [songPopularity, setSongPopularity] = useState(0);
+	const [setSongPopularity] = useState(0);
 
 	const fetchUserData = async () => {
 		try {
