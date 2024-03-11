@@ -15,7 +15,7 @@ const App = () => {
 			const json = await response.json();
 			setAccessToken(json.access_token);
 		}
-
+		//TODO: Re-authentication if no token found
 		getToken();
 	}, []);
 
