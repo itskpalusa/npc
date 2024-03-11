@@ -5,7 +5,6 @@ import SongPopularityIndicator from "./SongPopularityIndicator";
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	const [userData, setUserData] = useState(null);
 	const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
-	const [setSongPopularity] = useState(0);
 
 	const fetchUserData = async () => {
 		try {
@@ -83,7 +82,6 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	useEffect(() => {
 		fetchUserData();
 		fetchCurrentlyPlaying();
-		setSongPopularity();
 		const intervalId = setInterval(() => {
 			fetchCurrentlyPlaying();
 		}, 5000); // Refresh every 10 seconds
