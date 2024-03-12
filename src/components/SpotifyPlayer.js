@@ -31,11 +31,11 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 				},
 			);
 			const currentTrack = response.data.item;
-			if (currentTrack) {
+			if (currentTrack && currentTrack.album.id !== null) {
 				onSongChange(currentTrack);
 				setCurrentlyPlaying(currentTrack);
 			} else {
-				// Fetch last played if nothing currently playing
+				// Fetch last played if nothing currently playing or current track has no album ID
 				fetchLastPlayed();
 			}
 		} catch (error) {
@@ -62,7 +62,6 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 			console.error("Error fetching last played track:", error.response.data);
 		}
 	};
-
 
 	const handleNextSong = async () => {
 		try {
