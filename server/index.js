@@ -16,7 +16,7 @@ var spotify_redirect_uri = "http://localhost:3000/auth/callback";
 const spotify_redirect_uri =
 	process.env.NODE_ENV !== "production"
 		? "http://localhost:3000/auth/callback"
-		: "https://main--spotify-npc.netlify.app/auth/callback"; 
+		: "https://main--spotify-npc.netlify.app/"; 
 
 var generateRandomString = function (length) {
 	var text = "";
