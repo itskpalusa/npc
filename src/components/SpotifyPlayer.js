@@ -63,6 +63,7 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 		}
 	};
 
+
 	const handleNextSong = async () => {
 		try {
 			await axios.post(
@@ -137,7 +138,7 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 							<i className="fa-solid fa-arrow-left-long"></i>{" "}
 						</button>
 					</div>
-					{currentlyPlaying && (
+					{(currentlyPlaying || lastPlayed) && (
 						<div>
 							<div className="col">
 								<div className="card" style={{width: "18rem"}}>
