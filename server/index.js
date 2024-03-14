@@ -83,3 +83,5 @@ app.get("/auth/token", (req, res) => {
 app.listen(port, () => {
 	console.log(`Listening at http://localhost:${port}`);
 });
+
+app.use(express.static(path.join(__dirname, "../build")));
