@@ -10,8 +10,8 @@ dotenv.config();
 
 var spotify_client_id = process.env.SPOTIFY_CLIENT_ID;
 var spotify_client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-var spotify_redirect_uri =
-	"http://https://main--spotify-npc.netlify.app/auth/callback";
+
+var spotify_redirect_uri = "http://localhost:3000/auth/callback";
 
 var generateRandomString = function (length) {
 	var text = "";
@@ -29,7 +29,7 @@ var app = express();
 app.get("/auth/login", (req, res) => {
 	var scope =
 		"user-read-private user-read-email user-read-currently-playing user-read-recently-played user-modify-playback-state";
-	console.log(process.env);
+
 	var state = generateRandomString(16);
 
 	var auth_query_parameters = new URLSearchParams({
@@ -48,7 +48,6 @@ app.get("/auth/login", (req, res) => {
 
 app.get("/auth/callback", (req, res) => {
 	var code = req.query.code;
-	console.log(process.env);
 
 	var authOptions = {
 		url: "https://accounts.spotify.com/api/token",
