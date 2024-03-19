@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import SongPopularityIndicator from "./SongPopularityIndicator";
+import SongPopularityIndicator from "./BarChartBar";
+import BarChartBar from "./BarChartBar";
 
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
 	const [userData, setUserData] = useState(null);
 	const [lastPlayed, setLastPlayed] = useState(null);
 	const [currentlyPlaying, setCurrentlyPlaying] = useState(null);
+	const [currentArtist, setCurrentArtist] = useState("");
+	const [audioFeatures, setAudioFeatures] = useState("");
 
 	const fetchUserData = async () => {
 		try {
@@ -31,9 +34,20 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 				},
 			);
 			const currentTrack = response.data.item;
+			console.log(currentTrack);
 			if (currentTrack && currentTrack.album.id !== null) {
 				onSongChange(currentTrack);
 				setCurrentlyPlaying(currentTrack);
+				// Fetch artist details
+				const artistDetails = await getArtistDetails(
+					currentTrack.artists[0].id,
+				);
+				console.log(artistDetails);
+				setCurrentArtist(artistDetails);
+
+				// Fetch audio features
+				const features = await getAudioFeatures(currentTrack.id);
+				setAudioFeatures(features);
 			} else {
 				// Fetch last played if nothing currently playing or current track has no album ID
 				fetchLastPlayed();
@@ -63,6 +77,21 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 		}
 	};
 
+	const getArtistDetails = async (artistId) => {
+		try {
+			const response = await axios.get(
+				`https://api.spotify.com/v1/artists/${artistId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				},
+			);
+			return response.data;
+		} catch (error) {
+			console.error("Error fetching artist details:", error.response.data);
+		}
+	};
 
 	const handleNextSong = async () => {
 		try {
@@ -100,6 +129,22 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 		}
 	};
 
+	const getAudioFeatures = async (trackId) => {
+		try {
+			const response = await axios.get(
+				`https://api.spotify.com/v1/audio-features/${trackId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				},
+			);
+			return response.data;
+		} catch (error) {
+			console.error("Error fetching audio features:", error.response.data);
+		}
+	};
+
 	useEffect(() => {
 		fetchUserData();
 		fetchCurrentlyPlaying();
@@ -118,7 +163,13 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 					<div className="text-center">
 						<h2>Welcome, {userData.display_name}</h2>
 					</div>{" "}
-					<hr style={{width: "75%", height: "2px", color: "black"}}></hr>
+					<hr
+						style={{
+							width: "75%",
+							height: "2px",
+							color: "black",
+						}}
+					></hr>
 					<div className="text-center">
 						<h2>Currently Playing</h2>
 					</div>
@@ -153,12 +204,8 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 											Album: {currentlyPlaying.album.name}
 										</p>
 										<p className="text text-center">
-											Artist:{" "}
-											{currentlyPlaying.artists
-												.map((artist) => artist.name)
-												.join(", ")}
+											Artist: {currentArtist ? currentArtist.name : ""}
 										</p>
-
 										<img
 											className="rounded mx-auto d-block border"
 											src={currentlyPlaying.album.images[0].url}
@@ -173,13 +220,21 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 								<div className="card" style={{width: "18rem"}}>
 									<div className="card-header">
 										<h6 className="card-text text-center">
-											Popularity: {currentlyPlaying.popularity}
+											Song Spotify Rankings
 										</h6>
 									</div>
 									<div className="card-body">
-										<SongPopularityIndicator
-											songPopularity={currentlyPlaying.popularity}
-										/>
+										Popularity: {currentlyPlaying.popularity}
+										<BarChartBar value={currentlyPlaying.popularity} />
+										Artist Popularity: {currentArtist.popularity}
+										<BarChartBar value={currentArtist.popularity} />
+										Danceability:{" "}
+										{(audioFeatures.danceability * 100).toFixed(2)}
+										<BarChartBar value={audioFeatures.danceability * 100} />
+										Energy: {(audioFeatures.energy * 100).toFixed(2)}
+										<BarChartBar value={audioFeatures.energy * 100} />
+										Speechiness: {(audioFeatures.speechiness * 100).toFixed(2)}
+										<BarChartBar value={audioFeatures.speechiness * 1000} />
 									</div>
 								</div>
 							</div>
