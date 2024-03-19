@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import SongPopularityIndicator from "./BarChartBar";
 import BarChartBar from "./BarChartBar";
 
 const SpotifyPlayer = ({accessToken, onSongChange}) => {
@@ -34,7 +33,6 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 				},
 			);
 			const currentTrack = response.data.item;
-			console.log(currentTrack);
 			if (currentTrack && currentTrack.album.id !== null) {
 				onSongChange(currentTrack);
 				setCurrentlyPlaying(currentTrack);
@@ -42,7 +40,6 @@ const SpotifyPlayer = ({accessToken, onSongChange}) => {
 				const artistDetails = await getArtistDetails(
 					currentTrack.artists[0].id,
 				);
-				console.log(artistDetails);
 				setCurrentArtist(artistDetails);
 
 				// Fetch audio features
