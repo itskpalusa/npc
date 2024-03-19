@@ -6,7 +6,7 @@ const Navbar = ({accessToken, handleLogout}) => {
 		<nav className="navbar navbar-expand-lg navbar-light bg-light">
 			<div className="container justify-content-between">
 				<a className="navbar-brand" href="#">
-					NPC
+					Now Playing + Credits
 				</a>
 				<div className="text-end">
 					{accessToken && (
