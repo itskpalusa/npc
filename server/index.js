@@ -28,7 +28,7 @@ var app = express();
 
 app.get("/auth/login", (req, res) => {
 	var scope =
-		"user-read-private user-read-email user-read-currently-playing user-read-recently-played user-modify-playback-state";
+		"user-read-private user-read-email user-read-currently-playing user-read-recently-played user-modify-playback-state artist-read-full playlist-read-collaborative user-library-read";
 
 	var state = generateRandomString(16);
 
