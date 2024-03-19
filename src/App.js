@@ -35,10 +35,6 @@ const App = () => {
 			<Navbar handleLogout={handleLogout} accessToken={accessToken} />
 			<div className="container">
 				<div>
-					<div className="text-center">
-						<h1>Now Playing + Credits</h1>
-					</div>
-
 					<div>
 						{accessToken ? (
 							<div>
