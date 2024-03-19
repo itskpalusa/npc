@@ -1,0 +1,6 @@
+[[redirects]]
+  from = "/auth/*"
+  to = "https://spotify-npc.netlify.app/auth/:splat"
+  status = 200
+  force = true
+  headers = {Content-Type = "text/plain"}
