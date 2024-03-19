@@ -1,9 +1,11 @@
+// App.js
 import React, {useEffect, useState} from "react";
 
 import SpotifyPlayer from "./components/SpotifyPlayer";
 import CurrentlyPlayingCredits from "./components/CurrentlyPlayingCredits";
 // import History from "./components/History";
 import Login from "./components/Login";
+import Navbar from "./components/Navbar";
 
 const App = () => {
 	const [accessToken, setAccessToken] = useState("");
@@ -23,33 +25,41 @@ const App = () => {
 		setCurrentSong(song);
 	};
 
+	const handleLogout = () => {
+		// Clear access token
+		setAccessToken("");
+	};
+
 	return (
-		<div className="container">
-			<div>
-				<div className="text-center">
-					<h1>Now Playing + Credits</h1>
-				</div>
-
+		<div>
+			<Navbar handleLogout={handleLogout} accessToken={accessToken} />
+			<div className="container">
 				<div>
-					{accessToken ? (
-						<div>
-							<SpotifyPlayer
-								accessToken={accessToken}
-								onSongChange={handleSongChange}
-							/>
-							<hr style={{width: "75%", height: "2px", color: "black"}}></hr>
-							<div className="text-center">
-								<h2>Song Credits</h2>
-							</div>
-							<CurrentlyPlayingCredits currentSong={currentSong} />
-						</div>
-					) : (
-						<Login />
-					)}
-				</div>
-			</div>
+					<div className="text-center">
+						<h1>Now Playing + Credits</h1>
+					</div>
 
-			{/* <History accessToken={accessToken} /> */}
+					<div>
+						{accessToken ? (
+							<div>
+								<SpotifyPlayer
+									accessToken={accessToken}
+									onSongChange={handleSongChange}
+								/>
+								<hr style={{width: "75%", height: "2px", color: "black"}}></hr>
+								<div className="text-center">
+									<h2>Song Credits</h2>
+								</div>
+								<CurrentlyPlayingCredits currentSong={currentSong} />
+							</div>
+						) : (
+							<Login />
+						)}
+					</div>
+				</div>
+
+				{/* <History accessToken={accessToken} /> */}
+			</div>
 		</div>
 	);
 };
