@@ -4,7 +4,7 @@ module.exports = function (app) {
 	app.use(
 		"/auth/**",
 		createProxyMiddleware({
-			target: "https://backend-spotify.fly.dev",
+			target: "http://localhost:5001",
 		}),
 	);
 };
