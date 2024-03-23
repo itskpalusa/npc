@@ -1,6 +1,13 @@
+[build]
+  command = "npm run build"  # Adjust this command based on your build process
+  functions = "netlify/"  # Directory where your Netlify functions are located
+  publish = "public"  # Directory where your frontend files are located
+
 [[redirects]]
-  from = "/auth/**"
-  to = "https://test-deployment--spotify-npc.netlify.app/auth/:splat"
-  status = 200
-  force = true
-  headers = {Content-Type = "text/plain"}
+  from = "/auth/*"  # Match any request starting with /auth/
+  to = "/.netlify/functions/netlify"  # Redirect to the netlify.js Netlify function
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"  # Adjust CORS settings as needed
