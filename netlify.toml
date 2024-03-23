@@ -1,5 +1,4 @@
 [build]
-  command = "npm build"  # Replace with your build command if applicable
   functions = "netlify/"  # Directory where your Netlify functions are located
   publish = "public"  # Directory where your frontend files are located
 
