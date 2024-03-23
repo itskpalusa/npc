@@ -6,8 +6,3 @@
 [[redirects]]
   from = "/auth/*"  # Match any request starting with /auth/
   to = "/.netlify/functions/auth/:splat"  # Redirect to the auth Netlify function
-
-[[headers]]
-  for = "/*"
-    [headers.values]
-    Access-Control-Allow-Origin = "*"  # Adjust CORS settings as needed
