@@ -1,7 +1,0 @@
-[build]
-  functions = "netlify/"  # Directory where your Netlify functions are located
-  publish = "public"  # Directory where your frontend files are located
-
-[[redirects]]
-  from = "/auth/*"  # Match any request starting with /auth/
-  to = "/.netlify/functions/auth/:splat"  # Redirect to the auth Netlify function
