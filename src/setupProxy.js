@@ -5,6 +5,7 @@ module.exports = function (app) {
 		"/auth/**",
 		createProxyMiddleware({
 			target: "http://localhost:5001",
+			changeOrigin: true, // Change the origin of the host header
 		}),
 	);
 };
